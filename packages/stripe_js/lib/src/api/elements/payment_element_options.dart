@@ -39,7 +39,7 @@ class PaymentElementOptions with _$PaymentElementOptions {
     PaymentElementFields? fields,
     dynamic readOnly,
     dynamic terms,
-    dynamic wallets,
+    WalletsOptions? wallets,
   }) = _PaymentElementOptions;
 
   factory PaymentElementOptions.fromJson(Map<String, dynamic> json) =>
@@ -209,4 +209,22 @@ class PaymentElementAddressFields with _$PaymentElementAddressFields {
 
   factory PaymentElementAddressFields.fromJson(Map<String, dynamic> json) =>
       _$PaymentElementAddressFieldsFromJson(json);
+}
+
+enum WalletOption {
+  @JsonValue('auto')
+  auto,
+  @JsonValue('never')
+  never,
+}
+
+@freezed
+class WalletsOptions with _$WalletsOptions {
+  const factory WalletsOptions({
+    @Default(WalletOption.auto) WalletOption googlePay,
+    @Default(WalletOption.auto) WalletOption applePay,
+  }) = _WalletsOptions;
+
+  factory WalletsOptions.fromJson(Map<String, dynamic> json) =>
+      _$WalletsOptionsFromJson(json);
 }

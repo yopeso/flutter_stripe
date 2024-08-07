@@ -27,7 +27,10 @@ _$PaymentElementOptionsImpl _$$PaymentElementOptionsImplFromJson(Map json) =>
               Map<String, dynamic>.from(json['fields'] as Map)),
       readOnly: json['readOnly'],
       terms: json['terms'],
-      wallets: json['wallets'],
+      wallets: json['wallets'] == null
+          ? null
+          : WalletsOptions.fromJson(
+              Map<String, dynamic>.from(json['wallets'] as Map)),
     );
 
 Map<String, dynamic> _$$PaymentElementOptionsImplToJson(
@@ -47,7 +50,7 @@ Map<String, dynamic> _$$PaymentElementOptionsImplToJson(
   writeNotNull('fields', instance.fields?.toJson());
   writeNotNull('readOnly', instance.readOnly);
   writeNotNull('terms', instance.terms);
-  writeNotNull('wallets', instance.wallets);
+  writeNotNull('wallets', instance.wallets?.toJson());
   return val;
 }
 
@@ -261,3 +264,24 @@ Map<String, dynamic> _$$PaymentElementAddressFieldsImplToJson(
       'country': _$PaymentElementFieldRequiredEnumMap[instance.country]!,
       'postalCode': _$PaymentElementFieldRequiredEnumMap[instance.postalCode]!,
     };
+
+_$WalletsOptionsImpl _$$WalletsOptionsImplFromJson(Map json) =>
+    _$WalletsOptionsImpl(
+      googlePay:
+          $enumDecodeNullable(_$WalletOptionEnumMap, json['googlePay']) ??
+              WalletOption.auto,
+      applePay: $enumDecodeNullable(_$WalletOptionEnumMap, json['applePay']) ??
+          WalletOption.auto,
+    );
+
+Map<String, dynamic> _$$WalletsOptionsImplToJson(
+        _$WalletsOptionsImpl instance) =>
+    <String, dynamic>{
+      'googlePay': _$WalletOptionEnumMap[instance.googlePay]!,
+      'applePay': _$WalletOptionEnumMap[instance.applePay]!,
+    };
+
+const _$WalletOptionEnumMap = {
+  WalletOption.auto: 'auto',
+  WalletOption.never: 'never',
+};

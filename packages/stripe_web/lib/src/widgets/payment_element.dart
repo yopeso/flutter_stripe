@@ -13,11 +13,15 @@ export 'package:stripe_js/stripe_api.dart'
         PaymentElementLayout,
         PaymentElementDefaultValues,
         PaymentElementBillingDetails,
-        PaymentElementBillingDetailsAddress;
+        PaymentElementBillingDetailsAddress,
+        PaymentWalletOption,
+        PaymentWalletOptions;
 
 typedef PaymentElementTheme = js.ElementTheme;
 typedef PaymentElementAppearance = js.ElementAppearance;
 typedef PaymentElementAppearanceLabels = js.ElementAppearanceLabels;
+typedef PaymentWalletOption = js.WalletOption;
+typedef PaymentWalletOptions = js.WalletsOptions;
 
 class PaymentElement extends StatefulWidget {
   final String? clientSecret;
@@ -41,6 +45,7 @@ class PaymentElement extends StatefulWidget {
   final js.ElementAppearance? appearance;
   final String? locale;
   final PaymentElementDefaultValues? paymentElementDefaultValues;
+  final js.WalletsOptions? walletsOptions;
 
   PaymentElement({
     super.key,
@@ -63,6 +68,7 @@ class PaymentElement extends StatefulWidget {
     this.appearance,
     this.locale,
     this.paymentElementDefaultValues,
+    this.walletsOptions,
   });
 
   @override
@@ -120,7 +126,7 @@ class PaymentElementState extends State<PaymentElement> {
       ..style.border = 'none'
       ..style.width = '100%'
       ..style.height = '${height}'
-      ..style.overflow = 'scroll'
+      ..style.overflow = 'auto'
       ..style.overflowX = 'hidden';
 
     elements = WebStripe.js.elements(createOptions());
@@ -208,6 +214,7 @@ class PaymentElementState extends State<PaymentElement> {
     return js.PaymentElementOptions(
       layout: widget.layout,
       defaultValues: widget.paymentElementDefaultValues,
+      wallets: widget.walletsOptions,
     );
   }
 
