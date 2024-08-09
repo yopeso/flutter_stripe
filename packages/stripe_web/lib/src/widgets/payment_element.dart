@@ -110,7 +110,7 @@ class PaymentElementState extends State<PaymentElement> {
           final cr = entry.contentRect;
           setState(() {
             height = cr.height;
-            _divElement.style.height = '${height}px';
+            _divElement.style.height = '${height}';
           });
         }
       }
