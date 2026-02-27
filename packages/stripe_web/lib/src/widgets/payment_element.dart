@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:js_interop';
 import 'dart:ui_web' as ui;
-import 'dart:async';
 
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stripe_js/stripe_api.dart' as js;
@@ -14,15 +15,15 @@ import '../../flutter_stripe_web.dart';
 export 'package:stripe_js/src/api/elements/payment_element_options.dart';
 export 'package:stripe_js/stripe_api.dart'
     show
-    ElementAppearance,
-    ElementTheme,
-    ElementAppearanceLabels,
-    PaymentElementLayout,
-    PaymentElementDefaultValues,
-    PaymentElementBillingDetails,
-    PaymentElementBillingDetailsAddress,
-    PaymentElementWalletOptions,
-    PaymentElementFieldRequired;
+        ElementAppearance,
+        ElementTheme,
+        ElementAppearanceLabels,
+        PaymentElementLayout,
+        PaymentElementDefaultValues,
+        PaymentElementBillingDetails,
+        PaymentElementBillingDetailsAddress,
+        PaymentElementWalletOptions,
+        PaymentElementFieldRequired;
 
 typedef PaymentElementTheme = js.ElementTheme;
 
@@ -84,8 +85,7 @@ class PaymentElement extends StatefulWidget {
     this.terms,
     this.wallets,
     this.applePay,
-  })
-      : clientSecret = null,
+  })  : clientSecret = null,
         customerSessionClientSecret = null;
 
   const PaymentElement.withIntent({
@@ -114,8 +114,7 @@ class PaymentElement extends StatefulWidget {
     this.terms,
     this.wallets,
     this.applePay,
-  })
-      : amount = null,
+  })  : amount = null,
         currency = null,
         mode = null;
 
@@ -142,16 +141,16 @@ class PaymentElementState extends State<PaymentElement> {
           ..onFocus(requestFocus)
           ..onChange(onCardChanged);
         mutationObserver = web.MutationObserver(
-                (JSArray<web.MutationRecord> entries,
+            (JSArray<web.MutationRecord> entries,
                 web.MutationObserver observer) {
-              final stripeElements =
+          final stripeElements =
               web.document.getElementsByClassName('__PrivateStripeElement');
-              if (stripeElements.length != 0) {
-                mutationObserver?.disconnect();
-                final element = stripeElements.item(0) as web.HTMLElement;
-                resizeObserver.observe(element);
-              }
-            }.toJS);
+          if (stripeElements.length != 0) {
+            mutationObserver?.disconnect();
+            final element = stripeElements.item(0) as web.HTMLElement;
+            resizeObserver.observe(element);
+          }
+        }.toJS);
         mutationObserver!.observe(
           web.document,
           web.MutationObserverInit(childList: true, subtree: true),
@@ -172,7 +171,8 @@ class PaymentElementState extends State<PaymentElement> {
           _heightTimer?.cancel();
           _heightTimer = Timer(const Duration(milliseconds: 200), () {
             setState(() {
-              print('PaymentElement updating height maxHeight: $_maxHeight latestHeight: $newHeight');
+              print(
+                  'PaymentElement updating height maxHeight: $_maxHeight latestHeight: $newHeight');
 
               _maxHeight = newHeight < 10 ? _maxHeight : newHeight;
               height = _maxHeight;
@@ -186,9 +186,8 @@ class PaymentElementState extends State<PaymentElement> {
   );
 
   void setIframeHeightIfNeeded(final double height) {
-    final web.HTMLIFrameElement? iframe = web.document.querySelector(
-        '#payment-element iframe') as web
-        .HTMLIFrameElement?;
+    final web.HTMLIFrameElement? iframe = web.document
+        .querySelector('#payment-element iframe') as web.HTMLIFrameElement?;
 
     if (iframe == null) {
       print("PaymentElement: Error: Iframe not found.");
@@ -196,8 +195,7 @@ class PaymentElementState extends State<PaymentElement> {
     }
 
     final computedStyle = web.window.getComputedStyle(iframe);
-    final String heightString = computedStyle
-        .height;
+    final String heightString = computedStyle.height;
 
     final String numericString = heightString.replaceAll('px', '');
     final double? currentHeight = double.tryParse(numericString);
@@ -227,7 +225,7 @@ class PaymentElementState extends State<PaymentElement> {
     );
     ui.platformViewRegistry.registerViewFactory(
       'stripe_payment_element',
-          (int viewId) => _divElement,
+      (int viewId) => _divElement,
     );
 
     super.initState();
@@ -319,10 +317,28 @@ class PaymentElementState extends State<PaymentElement> {
 
   @override
   void didUpdateWidget(covariant PaymentElement oldWidget) {
-    if (widget.enablePostalCode != oldWidget.enablePostalCode ||
-        widget.placeholder != oldWidget.placeholder ||
-        widget.style != oldWidget.style) {}
     super.didUpdateWidget(oldWidget);
+
+    if (widget.locale != oldWidget.locale ||
+        widget.mode != oldWidget.mode ||
+        widget.currency != oldWidget.currency ||
+        widget.amount != oldWidget.amount ||
+        !listEquals(widget.paymentMethodTypes, oldWidget.paymentMethodTypes) ||
+        widget.appearance != oldWidget.appearance ||
+        widget.customerSessionClientSecret !=
+            oldWidget.customerSessionClientSecret) {
+      elements?.update(createOptions());
+    }
+
+    if (widget.defaultValues != oldWidget.defaultValues ||
+        widget.business != oldWidget.business ||
+        widget.paymentMethodOrder != oldWidget.paymentMethodOrder ||
+        widget.fields != oldWidget.fields ||
+        widget.readOnly != oldWidget.readOnly ||
+        widget.terms != oldWidget.terms ||
+        widget.applePay != oldWidget.applePay) {
+      element?.update(elementOptions());
+    }
   }
 
   @override

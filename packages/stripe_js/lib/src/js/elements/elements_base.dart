@@ -1,10 +1,12 @@
+import 'dart:js_interop';
+
 import 'package:stripe_js/stripe_api.dart';
 import 'package:stripe_js/stripe_js.dart';
-import 'dart:js_interop';
 
 extension type StripeElements(JSObject o) implements JSObject, Elements {
   external StripeElement create(String type, [JSAny? options]);
   external StripeElement? getElement(String type);
+  external void update(JsElementsCreateOptions options);
 }
 
 extension type ElementChangeResponse._(JSObject o) {
