@@ -1,3 +1,16 @@
+## 7.3.0
+ - Small fixes and maitenance improvements
+
+## 7.2.1
+
+**Fixes**
+- remove giropay payment method references from codebase (#2309).
+
+
+## 7.2.0
+
+ - Small fixes and maitenance improvements
+
 ## 7.1.0
 
 **Features**

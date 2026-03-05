@@ -1,3 +1,30 @@
+## 12.3.0
+
+**Features**
+- Sync with Stripe React Native [0.58.0](https://github.com/stripe/stripe-react-native/releases/tag/v0.58.0) 
+
+**Fixes**
+- #2332 Google Pay not appear on the PaymentSheet
+- #2314 Card details not complete error when using dangerouslyUpdateCardDetails
+- #2307 Paymentsheet card not focusable when tapping middle or bottom of the field.
+
+## 12.2.0
+
+**Features**
+- Sync with Stripe React Native [0.57.1](https://github.com/stripe/stripe-react-native/releases/tag/v0.57.1)
+- Added support for Alma payments
+- Added token creation callback methods
+- ioS: Support for liquid glass
+- Implemented new constructors for customer sheet and deprecated the old ones
+- Remove Giropay as Stripe no longer supports it
+- Improved stability of customer sheet screen
+
+**Fixes**
+ - #2064 crash collect bankaccounttoken
+ - android: keyboard not appearing on first tap for CardField @meylis1998
+ - #2137 improve URL callback handling for Link payment method @meylis1998
+ - #2283 fix: change initCustomerSheet return type to Future @meylis1998
+
 ## 12.1.1
 
 **Fixes**
